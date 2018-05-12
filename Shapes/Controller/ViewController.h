@@ -13,7 +13,7 @@
 #import "StatTableViewController.h"
 @interface ViewController : UIViewController<ShapeViewDelegate>
 {
-    NSUndoManager* undoManager;
+    //NSUndoManager* undoManager;
 }
 @property(nonatomic,strong)ShapeObjects* shapes;
 

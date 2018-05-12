@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.shapes = [[ShapeObjects alloc] init];
-    undoManager = [[NSUndoManager alloc] init];
+   // undoManager = [[NSUndoManager alloc] init];
 }
 
 
@@ -37,7 +37,7 @@
 
 
 - (IBAction)undo:(id)sender {
-    [undoManager undo];
+    //[undoManager undo];
 }
 
 
