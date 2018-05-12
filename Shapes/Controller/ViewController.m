@@ -15,11 +15,15 @@
 @end
 
 @implementation ViewController
-
+{
+    ShapeView* shapeView;
+    Shape* model;
+    int type;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.shapes = [[ShapeObjects alloc] init];
-   // undoManager = [[NSUndoManager alloc] init];
+    undoManager = [[NSUndoManager alloc] init];
 }
 
 
@@ -28,16 +32,18 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark actions
 
 - (IBAction)drawShapes:(UIButton*)sender {
-    ShapeView* shapeView = [[ShapeView alloc]initWithModel:[self.shapes addObject:(int)sender.tag width:self.view.frame.size.width height:self.view.frame.size.height]];
-    shapeView.deleagte = self;
-    [self.view addSubview:shapeView];
+    type = (int)sender.tag;
+    model = [self.shapes addObject:type width:self.view.frame.size.width height:self.view.frame.size.height];
+    [self addFigure:type model:model];
 }
 
 
+
 - (IBAction)undo:(id)sender {
-    //[undoManager undo];
+    [undoManager undo];
 }
 
 
@@ -50,9 +56,10 @@
 
 #pragma mark delegates
 
--(void)deleteFromView:(int)uid{
-    [self.shapes removeShapeById:uid];
-}
+
+//-(void)deleteFromView:(int)uid{
+//    [self.shapes removeShapeById:uid];
+//}
 
 #pragma mark segue
 
@@ -61,6 +68,66 @@
     [dvc receiveDictionary:[self.shapes getShapesCountByType]];
 }
 
+#pragma mark - Gesture recognisers
+-(void)deleteObject:(UILongPressGestureRecognizer*)sender{
+    ShapeView* shape = (ShapeView*) sender.view;
+    if (shape != nil){
+        if (sender.state == UIGestureRecognizerStateEnded) {
+           [self remvoeFromArray:shape];
+        }
+        else if (sender.state == UIGestureRecognizerStateBegan){
+        }
+    }
+}
+
+-(void)didPan:(UIPanGestureRecognizer*)recognizer{
+    ShapeView* shapeView = (ShapeView*)recognizer.view;
+    if ([recognizer state] == UIGestureRecognizerStateChanged)
+    {
+        CGPoint translation = [recognizer translationInView:self.view];
+        CGPoint sumPoint=CGPointMake(recognizer.view.center.x+translation.x, recognizer.view.center.y+ translation.y);
+        shapeView.center = sumPoint;
+       // [self registerUndoMoveFigure:sumPoint shape:(Shapes*)recognizer.view];
+        [recognizer setTranslation:CGPointZero inView:self.view];
+    }
+    
+}
+
+#pragma mark - Helpers
+
+-(void)addFigure:(int)senderTag model:(Shape*)model{
+    
+    [[undoManager prepareWithInvocationTarget:self]remvoeFromArray:shapeView];
+    if (![undoManager isUndoing]) {
+        [undoManager setActionName:NSLocalizedString(@"actions.add", @"add shape")];
+    }
+    
+    [self.shapes addObjectToArray:model];
+    shapeView = [[ShapeView alloc]initWithModel:model];
+    
+    shapeView.deleagte = self;
+    UIPanGestureRecognizer* pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(didPan:)];
+    [shapeView addGestureRecognizer:pan];
+    UILongPressGestureRecognizer* longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(deleteObject:)];
+    [shapeView addGestureRecognizer:longPress];
+    [self.view addSubview:shapeView];
+}
+
+-(void)remvoeFromArray:(ShapeView*)shape{
+    
+    [[undoManager prepareWithInvocationTarget:self]addFigure:type model:model];
+    if (![undoManager isUndoing]) {
+        [undoManager setActionName:NSLocalizedString(@"actions.remove", @"remove shape")];
+    }
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [shape removeFromSuperview];
+        [shape setNeedsDisplay];
+    });
+    [self.shapes removeShapeById:shape.getUniqueId];
+    
+}
 
 
 

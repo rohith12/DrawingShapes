@@ -22,16 +22,17 @@
 
 -(Shape*)addObject:(int)tag width:(float)width height:(float)height{
     Shape* shapeModel = [[Shape alloc]initWithtype:tag width:width height:height];
-    [shapeObjects addObject:shapeModel];
     return shapeModel;
 }
 
 -(void)removeShapeById:(int)uid{
+    
     for(Shape* shape in [shapeObjects reverseObjectEnumerator]){
         if([shape getUid] == uid){
             [shapeObjects removeObject:shape];
         }
     }
+    
 }
 
 -(NSDictionary*)getShapesCountByType{
@@ -60,7 +61,18 @@
 }
 
 
+-(void)addObjectToArray:(Shape*)shapeModel{
+    [shapeObjects addObject:shapeModel];
 
+}
+
+//-(void)addShapeById:(int)uid{
+//    for(Shape* shape in [shapeObjects reverseObjectEnumerator]){
+//        if([shape getUid] == uid){
+//            [shapeObjects removeObject:shape];
+//        }
+//    }
+//}
 
 
 @end

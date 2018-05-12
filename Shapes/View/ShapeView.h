@@ -11,7 +11,7 @@
 #import "Constants.h"
 
 @protocol ShapeViewDelegate<NSObject>
-
+@optional
 -(void)deleteFromView:(int)uid;
 
 @end
@@ -20,4 +20,5 @@
 
 @property(nonatomic,weak)id<ShapeViewDelegate>deleagte;
 -(id)initWithModel:(Shape*)shapeModel;
+-(int)getUniqueId;
 @end

@@ -29,10 +29,7 @@ const float lineWidth = 1.0;
         fillColor = [shapeModel getshapeColor];
         uniqueId = [shapeModel getUid];
         self.backgroundColor = [UIColor clearColor];
-        UIPanGestureRecognizer* pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(didPan:)];
-        [self addGestureRecognizer:pan];
-        UILongPressGestureRecognizer* longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(deleteObject:)];
-        [self addGestureRecognizer:longPress];
+     
         
     }
     return self;
@@ -79,32 +76,11 @@ const float lineWidth = 1.0;
     
 }
 
-#pragma mark gestures
-
--(void)didPan:(UIPanGestureRecognizer*)recognizer{
-    
-    if ([recognizer state] == UIGestureRecognizerStateChanged)
-    {
-        CGPoint translation = [recognizer translationInView:self];
-        CGPoint sumPoint=CGPointMake(recognizer.view.center.x+translation.x, recognizer.view.center.y+ translation.y);
-        self.center = sumPoint;
-        [recognizer setTranslation:CGPointZero inView:self];
-    }
-    
-    
+-(int)getUniqueId{
+    return uniqueId;
 }
 
--(void)deleteObject:(UILongPressGestureRecognizer*)sender{
-    
-        if (sender.state == UIGestureRecognizerStateEnded) {
-            [sender.view removeFromSuperview];
-            [self setNeedsDisplay];
-            [self.deleagte deleteFromView:uniqueId];
-        }
-        else if (sender.state == UIGestureRecognizerStateBegan){
-        }
-    
-}
+
 
 
 @end

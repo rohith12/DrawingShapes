@@ -14,4 +14,5 @@
 -(Shape*)addObject:(int)tag width:(float)width height:(float)height;
 -(void)removeShapeById:(int)uid;
 -(NSDictionary*)getShapesCountByType;
+-(void)addObjectToArray:(Shape*)shapeModel;
 @end
