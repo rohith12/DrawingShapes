@@ -17,7 +17,6 @@
 		38BDBBF220A63CE100540CB1 /* ShapeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BDBBF120A63CE100540CB1 /* ShapeView.m */; };
 		38BDBBF520A6468400540CB1 /* ShapeObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BDBBF420A6468400540CB1 /* ShapeObjects.m */; };
 		38D67C6B20A672AF008F64B8 /* StatTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D67C6A20A672AF008F64B8 /* StatTableViewController.m */; };
-		38D67C6F20A676D6008F64B8 /* UndoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D67C6E20A676D6008F64B8 /* UndoViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,8 +39,6 @@
 		38BDBBF620A6484800540CB1 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		38D67C6920A672AF008F64B8 /* StatTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatTableViewController.h; sourceTree = "<group>"; };
 		38D67C6A20A672AF008F64B8 /* StatTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatTableViewController.m; sourceTree = "<group>"; };
-		38D67C6D20A676D6008F64B8 /* UndoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UndoViewController.h; sourceTree = "<group>"; };
-		38D67C6E20A676D6008F64B8 /* UndoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UndoViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,8 +121,6 @@
 			isa = PBXGroup;
 			children = (
 				38BDBBF620A6484800540CB1 /* Constants.h */,
-				38D67C6D20A676D6008F64B8 /* UndoViewController.h */,
-				38D67C6E20A676D6008F64B8 /* UndoViewController.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -205,7 +200,6 @@
 				38BDBBD920A636EC00540CB1 /* ViewController.m in Sources */,
 				38BDBBE420A636EC00540CB1 /* main.m in Sources */,
 				38BDBBF220A63CE100540CB1 /* ShapeView.m in Sources */,
-				38D67C6F20A676D6008F64B8 /* UndoViewController.m in Sources */,
 				38BDBBD620A636EC00540CB1 /* AppDelegate.m in Sources */,
 				38BDBBEF20A6377A00540CB1 /* Shape.m in Sources */,
 				38D67C6B20A672AF008F64B8 /* StatTableViewController.m in Sources */,

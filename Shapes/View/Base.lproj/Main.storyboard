@@ -24,31 +24,24 @@
                                         <rect key="frame" x="11" y="12" width="352" height="30"/>
                                         <subviews>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tG9-9Q-eNB">
-                                                <rect key="frame" x="0.0" y="0.0" width="49.5" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="67.5" height="30"/>
                                                 <state key="normal" title="Square"/>
                                                 <connections>
                                                     <action selector="drawShapes:" destination="BYZ-38-t0r" eventType="touchUpInside" id="laj-Ps-MwG"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1u5-G6-6ea">
-                                                <rect key="frame" x="105.5" y="0.0" width="40" height="30"/>
+                                                <rect key="frame" x="123.5" y="0.0" width="55" height="30"/>
                                                 <state key="normal" title="Circle"/>
                                                 <connections>
                                                     <action selector="drawShapes:" destination="BYZ-38-t0r" eventType="touchUpInside" id="14d-LT-xCB"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bgd-Qk-RTP">
-                                                <rect key="frame" x="201.5" y="0.0" width="55.5" height="30"/>
+                                                <rect key="frame" x="234.5" y="0.0" width="117.5" height="30"/>
                                                 <state key="normal" title="Triangle"/>
                                                 <connections>
                                                     <action selector="drawShapes:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hnX-2c-6ym"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SxQ-BX-yic">
-                                                <rect key="frame" x="313" y="0.0" width="39" height="30"/>
-                                                <state key="normal" title="Undo"/>
-                                                <connections>
-                                                    <action selector="undo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LTf-hB-X20"/>
                                                 </connections>
                                             </button>
                                         </subviews>

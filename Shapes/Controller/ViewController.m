@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.shapes = [[ShapeObjects alloc] init];
-    undoManager = [[NSUndoManager alloc] init];
+//    undoManager = [[NSUndoManager alloc] init];
 }
 
 
@@ -40,11 +40,6 @@
     [self addFigure:type model:model];
 }
 
-
-
-- (IBAction)undo:(id)sender {
-    [undoManager undo];
-}
 
 
 
@@ -97,10 +92,7 @@
 
 -(void)addFigure:(int)senderTag model:(Shape*)model{
     
-    [[undoManager prepareWithInvocationTarget:self]remvoeFromArray:shapeView];
-    if (![undoManager isUndoing]) {
-        [undoManager setActionName:NSLocalizedString(@"actions.add", @"add shape")];
-    }
+ 
     
     [self.shapes addObjectToArray:model];
     shapeView = [[ShapeView alloc]initWithModel:model];
@@ -115,10 +107,7 @@
 
 -(void)remvoeFromArray:(ShapeView*)shape{
     
-    [[undoManager prepareWithInvocationTarget:self]addFigure:type model:model];
-    if (![undoManager isUndoing]) {
-        [undoManager setActionName:NSLocalizedString(@"actions.remove", @"remove shape")];
-    }
+ 
     
     
     dispatch_async(dispatch_get_main_queue(), ^{
