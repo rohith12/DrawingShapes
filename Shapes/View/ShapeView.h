@@ -21,4 +21,8 @@
 @property(nonatomic,weak)id<ShapeViewDelegate>deleagte;
 -(id)initWithModel:(Shape*)shapeModel;
 -(int)getUniqueId;
+-(int)getType;
+-(Shape*)getModel;
+
+
 @end

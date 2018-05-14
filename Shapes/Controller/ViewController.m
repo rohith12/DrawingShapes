@@ -8,8 +8,6 @@
 
 #import "ViewController.h"
 
-
-
 @interface ViewController ()
 
 @end
@@ -23,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.shapes = [[ShapeObjects alloc] init];
-//    undoManager = [[NSUndoManager alloc] init];
+    undoManager = [[NSUndoManager alloc] init];
 }
 
 
@@ -40,6 +38,11 @@
     [self addFigure:type model:model];
 }
 
+- (IBAction)undo:(id)sender {
+    
+    [undoManager undo];
+    
+}
 
 
 
@@ -49,12 +52,9 @@
     
 }
 
-#pragma mark delegates
 
 
-//-(void)deleteFromView:(int)uid{
-//    [self.shapes removeShapeById:uid];
-//}
+
 
 #pragma mark segue
 
@@ -70,19 +70,22 @@
         if (sender.state == UIGestureRecognizerStateEnded) {
            [self remvoeFromArray:shape];
         }
-        else if (sender.state == UIGestureRecognizerStateBegan){
-        }
     }
 }
 
 -(void)didPan:(UIPanGestureRecognizer*)recognizer{
     ShapeView* shapeView = (ShapeView*)recognizer.view;
+    CGPoint sumPoint;
+
+    if ([recognizer state] == UIGestureRecognizerStateBegan){
+        [self shapeMoved:shapeView center:shapeView.center];
+    }
+    
     if ([recognizer state] == UIGestureRecognizerStateChanged)
     {
         CGPoint translation = [recognizer translationInView:self.view];
-        CGPoint sumPoint=CGPointMake(recognizer.view.center.x+translation.x, recognizer.view.center.y+ translation.y);
+        sumPoint=CGPointMake(recognizer.view.center.x+translation.x, recognizer.view.center.y+ translation.y);
         shapeView.center = sumPoint;
-       // [self registerUndoMoveFigure:sumPoint shape:(Shapes*)recognizer.view];
         [recognizer setTranslation:CGPointZero inView:self.view];
     }
     
@@ -92,28 +95,41 @@
 
 -(void)addFigure:(int)senderTag model:(Shape*)model{
     
- 
-    
     [self.shapes addObjectToArray:model];
     shapeView = [[ShapeView alloc]initWithModel:model];
-    
     shapeView.deleagte = self;
+    
+    [[undoManager prepareWithInvocationTarget:self]remvoeFromArray:shapeView];
+    [undoManager setActionName:NSLocalizedString(@"actions.add", @"Add Shape")];
+    
     UIPanGestureRecognizer* pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(didPan:)];
     [shapeView addGestureRecognizer:pan];
     UILongPressGestureRecognizer* longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(deleteObject:)];
     [shapeView addGestureRecognizer:longPress];
     [self.view addSubview:shapeView];
+
 }
+
+
+-(void)shapeMoved:(ShapeView*)shape center:(CGPoint)origin{
+    
+    [[undoManager prepareWithInvocationTarget:self]shapeMoved:shapeView center:origin];
+    [undoManager setActionName:NSLocalizedString(@"actions.moved", @"Move Shape")];
+    
+    shape.center = origin;
+}
+
 
 -(void)remvoeFromArray:(ShapeView*)shape{
     
- 
-    
+    [[undoManager prepareWithInvocationTarget:self]addFigure:shape.getType model:[shape getModel]];
+    [undoManager setActionName:NSLocalizedString(@"actions.remove", @"Remove Shape")];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [shape removeFromSuperview];
         [shape setNeedsDisplay];
     });
+    
     [self.shapes removeShapeById:shape.getUniqueId];
     
 }

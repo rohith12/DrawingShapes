@@ -16,18 +16,19 @@ const float lineWidth = 1.0;
     UIColor* fillColor;
     int uniqueId;
     int type;
+    Shape* model;
 }
 
 -(id)initWithModel:(Shape *)shapeModel{
     
     if((self = [super initWithFrame:CGRectMake(0.0,0.0, size, size)])) {
-        
-        type = [shapeModel getType];
+        model = shapeModel;
+        type = [model getType];
         path = [self linePathtype:type];
         path.lineWidth = lineWidth;
-        self.center = [shapeModel getOrigin];
-        fillColor = [shapeModel getshapeColor];
-        uniqueId = [shapeModel getUid];
+        self.center = [model getOrigin];
+        fillColor = [model getshapeColor];
+        uniqueId = [model getUid];
         self.backgroundColor = [UIColor clearColor];
      
         
@@ -81,6 +82,12 @@ const float lineWidth = 1.0;
 }
 
 
+-(int)getType{
+    return type;
+}
 
+-(Shape*)getModel{
+    return model;
+}
 
 @end
