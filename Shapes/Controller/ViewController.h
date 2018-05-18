@@ -15,7 +15,7 @@
 {
     NSUndoManager* undoManager;
 }
-@property(nonatomic,strong)ShapeObjects* shapes;
-
+//@property(nonatomic,strong)ShapeObjects* shapes;
+@property(nonatomic,strong)NSMutableArray* AllShapes;
 @end
 

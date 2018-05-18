@@ -30,8 +30,6 @@ const float lineWidth = 1.0;
         fillColor = [model getshapeColor];
         uniqueId = [model getUid];
         self.backgroundColor = [UIColor clearColor];
-     
-        
     }
     return self;
     

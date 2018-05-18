@@ -18,10 +18,12 @@
     Shape* model;
     int type;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.shapes = [[ShapeObjects alloc] init];
+//    self.shapes = [[ShapeObjects alloc] init];
     undoManager = [[NSUndoManager alloc] init];
+    self.AllShapes = [[NSMutableArray alloc]init];
 }
 
 
@@ -34,8 +36,9 @@
 
 - (IBAction)drawShapes:(UIButton*)sender {
     type = (int)sender.tag;
-    model = [self.shapes addObject:type width:self.view.frame.size.width height:self.view.frame.size.height];
-    [self addFigure:type model:model];
+    model  = [[Shape alloc]initWithtype:type width:self.view.frame.size.width  height:self.view.frame.size.height];
+    shapeView = [[ShapeView alloc]initWithModel:model];
+    [self addFigure:type model:model shapeView:shapeView];
 }
 
 - (IBAction)undo:(id)sender {
@@ -53,14 +56,11 @@
 }
 
 
-
-
-
 #pragma mark segue
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     StatTableViewController* dvc = [segue destinationViewController];
-    [dvc receiveDictionary:[self.shapes getShapesCountByType]];
+    [dvc receiveDictionary:[self getShapesCountByType]];
 }
 
 #pragma mark - Gesture recognisers
@@ -93,47 +93,87 @@
 
 #pragma mark - Helpers
 
--(void)addFigure:(int)senderTag model:(Shape*)model{
-    
-    [self.shapes addObjectToArray:model];
-    shapeView = [[ShapeView alloc]initWithModel:model];
-    shapeView.deleagte = self;
+-(void)addFigure:(int)senderTag model:(Shape*)model  shapeView:(ShapeView*)shapeView{
     
     [[undoManager prepareWithInvocationTarget:self]remvoeFromArray:shapeView];
-    [undoManager setActionName:NSLocalizedString(@"actions.add", @"Add Shape")];
+    if (![undoManager isUndoing]) {
+        
+        [undoManager setActionName:NSLocalizedString(@"actions.add", @"Add Shape")];
+    }
     
+    [self.AllShapes addObject:model];
+
     UIPanGestureRecognizer* pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(didPan:)];
     [shapeView addGestureRecognizer:pan];
     UILongPressGestureRecognizer* longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(deleteObject:)];
     [shapeView addGestureRecognizer:longPress];
     [self.view addSubview:shapeView];
 
+   
 }
 
 
 -(void)shapeMoved:(ShapeView*)shape center:(CGPoint)origin{
-    
-    [[undoManager prepareWithInvocationTarget:self]shapeMoved:shapeView center:origin];
-    [undoManager setActionName:NSLocalizedString(@"actions.moved", @"Move Shape")];
-    
+   
     shape.center = origin;
+
+    [[undoManager prepareWithInvocationTarget:self]shapeMoved:shapeView center:origin];
+    if(![undoManager isUndoing]) {
+       [undoManager setActionName:NSLocalizedString(@"actions.moved", @"Move Shape")];
+    }
 }
 
 
 -(void)remvoeFromArray:(ShapeView*)shape{
     
-    [[undoManager prepareWithInvocationTarget:self]addFigure:shape.getType model:[shape getModel]];
-    [undoManager setActionName:NSLocalizedString(@"actions.remove", @"Remove Shape")];
+    [[undoManager prepareWithInvocationTarget:self]addFigure:shape.getType model:[shape getModel] shapeView:shape];
+    if (![undoManager isUndoing]) {
+       [undoManager setActionName:NSLocalizedString(@"actions.remove", @"Remove Shape")];
+    }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
         [shape removeFromSuperview];
         [shape setNeedsDisplay];
-    });
     
-    [self.shapes removeShapeById:shape.getUniqueId];
+    [self removeShapeById:shape.getUniqueId];
+    
+   
     
 }
 
+-(void)removeShapeById:(int)uid{
+    
+    for(Shape* shape in [self.AllShapes reverseObjectEnumerator]){
+        if([shape getUid] == uid){
+            [self.AllShapes removeObject:shape];
+        }
+    }
+    
+}
+
+-(NSDictionary*)getShapesCountByType{
+    
+    int squares = 0;
+    int circles = 0;
+    int triangles = 0;
+    for(Shape* shape in self.AllShapes){
+        switch (shape.getType) {
+            case ShapeTypeSquare:
+                squares++;
+                break;
+            case ShapeTypeCircle:
+                circles++;
+                break;
+            case ShapeTypeTriangle:
+                triangles++;
+                break;
+            default:
+                break;
+        }
+    }
+    
+    NSDictionary* dict = @{@"Square":[NSNumber numberWithInt:squares],@"Circles":[NSNumber numberWithInt:circles],@"Triangles":[NSNumber numberWithInt:triangles]};
+    return dict;
+}
 
 
 @end
